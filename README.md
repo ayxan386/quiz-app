@@ -1,5 +1,7 @@
 ##Following lines describe the endpoints present in the backend app
+
   ###GET
+  
     1. /api/question:
         returns a list of all Question with their corresponding answers
         also removes the correct answer and replaces it with -1 :D
@@ -35,6 +37,7 @@
     3. /api/question/{id}
         Returns a single question for given id.
   ###POST
+  
     1. /api/question
         Saves Question passed in the body to the database.
         Example of body:
@@ -46,8 +49,7 @@
             	"answer" : 1
             }
     2. /api/check
-        Upon receiving the list of answers checks them 
-        and returns the total score of user
+        Upon receiving the list of answers checks them and returns the total score of user
         Example: 
             {
             	"anws": [
@@ -57,6 +59,5 @@
             		}],
             		"ans_weight": 1
             }
-          Where, "anws" is a array of objects 
-          containing question's id and the user's answer
+          Where, "anws" is a array of objects containing question's id and the user's answer
           "ans_weight" corresponds to how much one correct answer is worth
