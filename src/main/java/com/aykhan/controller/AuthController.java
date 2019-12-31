@@ -31,6 +31,6 @@ public class AuthController {
   public LoginResponse login(@RequestBody LoginRequest req) {
     return authService.login(req.getName(), req.getPass(), req.isRemember())
         .map(token -> new LoginResponse("logged in", token))
-        .orElse(new LoginResponse("wrong credentials", "aweawe"));
+        .orElse(new LoginResponse("wrong credentials", null));
   }
 }

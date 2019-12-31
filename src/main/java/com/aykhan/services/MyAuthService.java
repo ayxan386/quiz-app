@@ -50,9 +50,8 @@ public class MyAuthService {
         .map(
             a -> {
               User u = (User) a.getPrincipal();
-              return new MyUser(u.getUsername(),
-                  u.getPassword(),
-                  u.getAuthorities().stream().findAny().get().toString()); //TODO rewrite this ugly thing
+              Optional<MyUser> byName = userRepository.getByName(u.getUsername());
+              return byName.get();
             }
         )
         .map(ud -> jwtTokenService.generateToken((long) ud.getId(), remember))
