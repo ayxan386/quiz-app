@@ -24,7 +24,7 @@ public class AnswerController {
   }
 
   @PostMapping("")
-  Integer checkMyAnswers(@RequestBody UserSubmission submission) {
+  public Integer checkMyAnswers(@RequestBody UserSubmission submission) {
     current_score = 0;
     log.debug(String.format("User submission %s", submission));
     submission.getAnws()

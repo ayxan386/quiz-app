@@ -44,11 +44,15 @@ public class QuestionService {
 
   public void saveOne(QuestionToAdd q) {
     log.debug(q.toString());
-    int id = questionRepository.save(
-        new Question(q.getId(), q.getQuestion(), q.getSubject(), null, q.getAnswer()))
-        .getId();
-    for (String a : q.getOptions()) {
-      answerService.saveOne(new Answer(id, a));
+    Question added_q = questionRepository.save(
+        new Question(q.getId(), q.getQuestion(), q.getSubject(), null, q.getAnswer()));
+    for (int i = 0; i < q.getOptions().size(); i++) {
+      Answer answer =
+          answerService.saveOne(new Answer(added_q.getId(), q.getOptions().get(i)));
+      if (i == q.getAnswer()) {
+        added_q.setAnswer(answer.getId());
+      }
+      questionRepository.save(added_q);
     }
   }
 }
