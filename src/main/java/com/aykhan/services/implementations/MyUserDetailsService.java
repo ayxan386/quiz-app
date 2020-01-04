@@ -1,5 +1,6 @@
 package com.aykhan.services.implementations;
 
+import com.aykhan.entities.MyUser;
 import com.aykhan.repository.MyUserRepository;
 import lombok.SneakyThrows;
 import org.springframework.security.core.userdetails.User;
@@ -29,6 +30,10 @@ public class MyUserDetailsService implements UserDetailsService {
             .roles(user.getRole())
             .build()))
         .orElseThrow((Supplier<Throwable>) () -> new UsernameNotFoundException("no such user exists"));
+  }
+
+  public MyUser getByUsername(String username) {
+    return userRepository.getByName(username).orElse(null);
   }
 
   public UserDetails getById(Integer id) {

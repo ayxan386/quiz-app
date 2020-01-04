@@ -23,7 +23,7 @@ public class AuthController {
   @PostMapping("/register")
   public RegisterResponse register_new(@RequestBody RegisterRequest req) {
     log.debug(String.format("request received %s", req));
-    boolean res = authService.register(req.getName(), req.getPass(), req.getIsMaker());
+    boolean res = authService.register(req.getName(), req.getEmail(), req.getPass(), req.getIsMaker());
     return res ? RegisterResponse.ok() : RegisterResponse.alreadyRegistered();
   }
 

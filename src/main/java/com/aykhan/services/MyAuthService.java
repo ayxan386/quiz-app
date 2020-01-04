@@ -31,10 +31,11 @@ public class MyAuthService {
     this.jwtTokenService = jwtTokenService;
   }
 
-  public boolean register(String username, String pass, boolean is_maker) {
+  public boolean register(String username, String email, String pass, boolean is_maker) {
     boolean isPresent = userRepository.getByName(username).isPresent();
     if (!isPresent)
       userRepository.save(new MyUser(username,
+          email,
           encoder.encode(pass),
           is_maker ? "MAKER" : "USER"));
     return !isPresent;

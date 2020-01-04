@@ -21,11 +21,13 @@ public class MyUser {
 
   private String name;
 
+  private String email;
+
   private String password;
 
   private String role;
 
-  public MyUser(String username, String pass, String s) {
-    this(-1, username, pass, s);
+  public MyUser(String username, String email, String pass, String s) {
+    this(-1, username, email, pass, s);
   }
 }
