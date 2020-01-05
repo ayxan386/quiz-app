@@ -2,7 +2,10 @@ package com.aykhan.controller;
 
 import com.aykhan.dto.UserAnswer;
 import com.aykhan.dto.UserSubmission;
+import com.aykhan.entities.Subject;
 import com.aykhan.services.implementations.QuestionService;
+import com.aykhan.services.implementations.SubjectService;
+import com.aykhan.services.implementations.UserResultsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnswerController {
 
   private final QuestionService questionService;
+  private final UserResultsService userResultsService;
+  private final SubjectService subjectService;
   private int current_score = 0;
 
   @Autowired
-  public AnswerController(QuestionService questionService) {
+  public AnswerController(QuestionService questionService,
+                          UserResultsService userResultsService,
+                          SubjectService subjectService) {
     this.questionService = questionService;
+    this.userResultsService = userResultsService;
+    this.subjectService = subjectService;
   }
 
   @PostMapping("")
@@ -31,6 +40,11 @@ public class AnswerController {
         .forEach(
             userAnswer -> check(userAnswer, submission.getAns_weight())
         );
+
+    int question_id = submission.getAnws().get(0).getQuestion_id();
+    Subject subject = subjectService.getByName(questionService.get(question_id).getSubject());
+    userResultsService.saveScoreOfAuth(current_score, subject);
+
     return current_score;
   }
 
