@@ -3,6 +3,7 @@ package com.aykhan.controller;
 import com.aykhan.dto.UserAnswer;
 import com.aykhan.dto.UserSubmission;
 import com.aykhan.entities.Subject;
+import com.aykhan.services.ResultSendingService;
 import com.aykhan.services.implementations.QuestionService;
 import com.aykhan.services.implementations.SubjectService;
 import com.aykhan.services.implementations.UserResultsService;
@@ -20,15 +21,18 @@ public class AnswerController {
 
   private final QuestionService questionService;
   private final UserResultsService userResultsService;
+  private final ResultSendingService mailService;
   private final SubjectService subjectService;
   private int current_score = 0;
 
   @Autowired
   public AnswerController(QuestionService questionService,
                           UserResultsService userResultsService,
+                          ResultSendingService mailService,
                           SubjectService subjectService) {
     this.questionService = questionService;
     this.userResultsService = userResultsService;
+    this.mailService = mailService;
     this.subjectService = subjectService;
   }
 
@@ -45,6 +49,7 @@ public class AnswerController {
     Subject subject = subjectService.getByName(questionService.get(question_id).getSubject());
     userResultsService.saveScoreOfAuth(current_score, subject);
 
+    mailService.sendResultMail(subject, current_score);
     return current_score;
   }
 
