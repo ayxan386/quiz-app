@@ -46,7 +46,8 @@ public class MyCustomSecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
 //        .antMatchers("/api/createTest").hasRole("MAKER")
 //        .antMatchers("/test").hasAnyAuthority()
-        .antMatchers("/", "/**").permitAll()
+//        .antMatchers("/", "/**").permitAll()
+        .antMatchers("/api/**").authenticated()
         .anyRequest().permitAll();
 
     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

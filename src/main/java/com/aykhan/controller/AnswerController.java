@@ -2,7 +2,7 @@ package com.aykhan.controller;
 
 import com.aykhan.dto.UserAnswer;
 import com.aykhan.dto.UserSubmission;
-import com.aykhan.entities.Subject;
+import com.aykhan.entities.Question;
 import com.aykhan.services.ResultSendingService;
 import com.aykhan.services.implementations.QuestionService;
 import com.aykhan.services.implementations.SubjectService;
@@ -46,10 +46,15 @@ public class AnswerController {
         );
 
     int question_id = submission.getAnws().get(0).getQuestion_id();
-    Subject subject = subjectService.getByName(questionService.get(question_id).getSubject());
-    userResultsService.saveScoreOfAuth(current_score, subject);
-
-    mailService.sendResultMail(subject, current_score);
+    questionService.getOpt(question_id)
+        .map(Question::getSubject)
+        .map(subjectService::getByName)
+        .ifPresent(subject ->
+            {
+              userResultsService.saveScoreOfAuth(current_score, subject);
+              mailService.sendResultMail(subject, current_score);
+            }
+        );
     return current_score;
   }
 

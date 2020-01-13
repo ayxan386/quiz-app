@@ -52,7 +52,7 @@ public class MyAuthService {
             a -> {
               User u = (User) a.getPrincipal();
               Optional<MyUser> byName = userRepository.getByName(u.getUsername());
-              return byName.get();
+              return byName.orElse(null);
             }
         )
         .map(ud -> jwtTokenService.generateToken((long) ud.getId(), remember))

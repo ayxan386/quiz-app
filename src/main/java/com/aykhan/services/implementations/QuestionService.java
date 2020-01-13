@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -50,8 +51,16 @@ public class QuestionService {
     return questionRepository.findById(id).orElse(null);
   }
 
+  public Optional<Question> getOpt(int id) {
+    return questionRepository.findById(id);
+  }
+
   public Integer getCorrectAnswer(int question_id) {
-    return get(question_id).getAnswer();
+    try {
+      return get(question_id).getAnswer();
+    } catch (Exception e) {
+      return -1;
+    }
   }
 
   public void saveOne(QuestionToAdd q) {
