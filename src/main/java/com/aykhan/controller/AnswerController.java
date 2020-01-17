@@ -4,9 +4,11 @@ import com.aykhan.dto.UserAnswer;
 import com.aykhan.dto.UserSubmission;
 import com.aykhan.entities.Question;
 import com.aykhan.services.ResultSendingService;
+import com.aykhan.services.implementations.MyUserDetailsService;
 import com.aykhan.services.implementations.QuestionService;
 import com.aykhan.services.implementations.SubjectService;
 import com.aykhan.services.implementations.UserResultsService;
+import com.aykhan.util.AuthAccess;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,17 +25,20 @@ public class AnswerController {
   private final UserResultsService userResultsService;
   private final ResultSendingService mailService;
   private final SubjectService subjectService;
+  private final MyUserDetailsService userDetailsService;
   private int current_score = 0;
 
   @Autowired
   public AnswerController(QuestionService questionService,
                           UserResultsService userResultsService,
                           ResultSendingService mailService,
-                          SubjectService subjectService) {
+                          SubjectService subjectService,
+                          MyUserDetailsService userDetailsService) {
     this.questionService = questionService;
     this.userResultsService = userResultsService;
     this.mailService = mailService;
     this.subjectService = subjectService;
+    this.userDetailsService = userDetailsService;
   }
 
   @PostMapping("")
@@ -50,10 +55,11 @@ public class AnswerController {
         .map(Question::getSubject)
         .map(subjectService::getByName)
         .ifPresent(subject ->
-            {
-              userResultsService.saveScoreOfAuth(current_score, subject);
-              mailService.sendResultMail(subject, current_score);
-            }
+                {
+                  mailService.sendResultMail(subject, current_score);
+                  userResultsService.saveScoreOfAuth(current_score, subject);
+                  userDetailsService.deleteAcc(AuthAccess.currentUser().getUsername());
+                }
         );
     return current_score;
   }
