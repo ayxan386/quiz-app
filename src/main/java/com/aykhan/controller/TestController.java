@@ -36,9 +36,9 @@ public class TestController {
     return RemoveCorrectAnswers.removeCorrectAnswer(questionService.getAll(subject));
   }
 
-  @GetMapping("/{id}")
-  Question getId( @PathVariable("id") int id) {
-    return RemoveCorrectAnswers.removeCorrectAnswer(questionService.get(id));
-  }
+//  @GetMapping("/{id}")
+//  Question getId( @PathVariable("id") int id) {
+//    return RemoveCorrectAnswers.removeCorrectAnswer(questionService.get(id));
+//  }
 
 }
