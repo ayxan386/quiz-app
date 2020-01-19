@@ -45,7 +45,7 @@ public class SubjectController {
 
     @PostMapping("")
     void addSubject(@RequestBody SubjectReq subject) {
-        log.info(String.format("received info %s\n", subject));
+//        log.info(String.format("received info %s\n", subject));
         MyUser myUser = userDetailsService.getByUsername(AuthAccess.currentUser().getUsername());
         subjectService.saveOne(new Subject(-1, subject.getSubject(), myUser));
     }
