@@ -5,9 +5,8 @@ import com.aykhan.entities.Subject;
 import com.aykhan.services.implementations.MyUserDetailsService;
 import com.aykhan.services.implementations.SubjectService;
 import com.aykhan.util.AuthAccess;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -15,6 +14,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/subject**")
+@Slf4j
 public class SubjectController {
 
     private final SubjectService subjectService;
@@ -44,8 +44,8 @@ public class SubjectController {
 
     @PostMapping("")
     void addSubject(@RequestBody String subject) {
-        User extracted_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MyUser myUser = userDetailsService.getByUsername(extracted_user.getUsername());
+        log.info(String.format("received info %s\n", subject));
+        MyUser myUser = userDetailsService.getByUsername(AuthAccess.currentUser().getUsername());
         subjectService.saveOne(new Subject(-1, subject, myUser));
     }
 }
