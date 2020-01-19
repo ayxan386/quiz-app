@@ -1,5 +1,6 @@
 package com.aykhan.controller;
 
+import com.aykhan.dto.SubjectReq;
 import com.aykhan.entities.MyUser;
 import com.aykhan.entities.Subject;
 import com.aykhan.services.implementations.MyUserDetailsService;
@@ -43,9 +44,9 @@ public class SubjectController {
     }
 
     @PostMapping("")
-    void addSubject(@RequestBody String subject) {
+    void addSubject(@RequestBody SubjectReq subject) {
         log.info(String.format("received info %s\n", subject));
         MyUser myUser = userDetailsService.getByUsername(AuthAccess.currentUser().getUsername());
-        subjectService.saveOne(new Subject(-1, subject, myUser));
+        subjectService.saveOne(new Subject(-1, subject.getSubject(), myUser));
     }
 }
