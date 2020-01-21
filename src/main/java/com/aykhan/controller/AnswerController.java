@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/check")
 @Slf4j
@@ -58,7 +60,10 @@ public class AnswerController {
                 {
                   mailService.sendResultMail(subject, current_score);
                   userResultsService.saveScoreOfAuth(current_score, subject);
-                  userDetailsService.deleteAcc(AuthAccess.currentUser().getUsername());
+                  String username = AuthAccess.currentUser().getUsername();
+                  Optional.of(userDetailsService.getByUsername(username).getRole().contains("MAKER"))
+                          .filter(isMaker -> isMaker)
+                          .ifPresent(doesNotMatter -> userDetailsService.deleteAcc(username));
                 }
         );
     return current_score;
