@@ -41,6 +41,7 @@ public class MyUserDetailsService implements UserDetailsService {
         return Optional.ofNullable(getByUsername(username))
                 .map(user -> {
                     user.setPassword(RandomGen.generate(26));
+                    user.setName(user.getName() + "[DELETED]");
                     return user;
                 })
                 .map(userRepository::save)
