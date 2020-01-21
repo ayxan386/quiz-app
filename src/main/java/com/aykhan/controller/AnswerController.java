@@ -61,6 +61,7 @@ public class AnswerController {
                   mailService.sendResultMail(subject, current_score);
                   userResultsService.saveScoreOfAuth(current_score, subject);
                   String username = AuthAccess.currentUser().getUsername();
+                  log.info(String.format("user got from database %s", userDetailsService.getByUsername(username)));
                   Optional.of(userDetailsService.getByUsername(username).getRole().contains("MAKER"))
                           .filter(isMaker -> isMaker)
                           .ifPresent(doesNotMatter -> userDetailsService.deleteAcc(username));
