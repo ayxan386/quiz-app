@@ -1,6 +1,5 @@
 package com.aykhan.security;
 
-import com.aykhan.services.implementations.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,17 +19,10 @@ import java.util.Arrays;
 public class MyCustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final JwtFilter jwtFilter;
-  private MyUserDetailsService myUserDetailService;
 
-  public MyCustomSecurityConfig(MyUserDetailsService myUserDetailService, JwtFilter jwtFilter) {
-    this.myUserDetailService = myUserDetailService;
+  public MyCustomSecurityConfig(JwtFilter jwtFilter) {
     this.jwtFilter = jwtFilter;
   }
-
-//  @Override
-//  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//    auth.userDetailsService(myUserDetailService);
-//  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -44,9 +36,6 @@ public class MyCustomSecurityConfig extends WebSecurityConfigurerAdapter {
 
     http
         .authorizeRequests()
-//        .antMatchers("/api/createTest").hasRole("MAKER")
-//        .antMatchers("/test").hasAnyAuthority()
-//        .antMatchers("/", "/**").permitAll()
         .antMatchers("/api/**").authenticated()
         .anyRequest().permitAll();
 
