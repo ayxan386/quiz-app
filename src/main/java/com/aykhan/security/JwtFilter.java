@@ -2,6 +2,7 @@ package com.aykhan.security;
 
 import com.aykhan.services.implementations.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
+@Profile("Secure")
 public class JwtFilter extends OncePerRequestFilter {
   private final JwtTokenService jwtTokenService;
   private final MyUserDetailsService userDetailsService;
